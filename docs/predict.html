@@ -45,17 +45,17 @@
       const v = wind_speed*Math.cos(wind_dir_rad); // nord-sør
 
       // coefficients
-      const intercept = 27.80490618;
-      const b_watts = -0.02378960;
-      const b_v = 0.03490664;
-      const b_u = 0.02766503;
+      const intercept = 28.75857151;
+      const b_watts = -1.97684089;
+      const b_v = 0.04889548;
+      const b_u = 0.02156564;
 
       // If you used watt/kg instead:
       const wattkg = watts / weight;
 
       // Example using average_watts model:
       const minutter = intercept 
-                     + b_watts * watts 
+                     + b_watts * wattkg 
                      + b_v * v; 
                      + b_u * u;
     // Get whole minutes
