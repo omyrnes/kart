@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Time Predictor</title>
+</head>
+<body>
+
+  <h2>Tryvann predictor</h2>
+
+  <label>Rider weight (kg):</label><br>
+  <input type="number" id="weight"><br><br>
+
+  <label>Average Watts:</label><br>
+  <input type="number" id="watts"><br><br>
+
+  <label>Wind speed (m/s):</label><br>
+  <input type="number" id="wind_speed"><br><br>
+
+  <label>Wind Direction:</label><br>
+  <select id="wind_dir">
+    <option value="180">South</option>
+    <option value="225">South west</option>
+    <option value="270">West</option>
+    <option value="315">North West</option>
+    <option value="0">North</option>
+    <option value="45">North East</option>
+    <option value="90">East</option>
+    <option value="135">South East</option>
+
+  </select><br><br>
+
+  <button onclick="predictTime()">Calculate</button>
+
+  <h3 id="result"></h3>
+
+  <script>
+    function predictTime() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const watts = parseFloat(document.getElementById("watts").value);
+      const wind_speed = parseFloat(document.getElementById("wind_speed").value);
+      const wind_deg = parseFloat(document.getElementById("wind_dir").value);
+
+      const wind_dir_rad = wind_deg * Math.PI / 180;
+      const u = wind_speed*Math.sin(wind_dir_rad); // øst-vest
+      const v = wind_speed*Math.cos(wind_dir_rad); // nord-sør
+
+      // coefficients
+      const intercept = 27.80490618;
+      const b_watts = -0.02378960;
+      const b_v = 0.03490664;
+      const b_u = 0.02766503;
+
+      // If you used watt/kg instead:
+      const wattkg = watts / weight;
+
+      // Example using average_watts model:
+      const minutter = intercept 
+                     + b_watts * watts 
+                     + b_v * v; 
+                     + b_u * u;
+    // Get whole minutes
+    const floormins = Math.floor(minutter);
+
+    // Get seconds
+    const secs = Math.round((minutter - floormins) * 60);
+
+    // Handle edge case (e.g. 59.9 → 60 sec)
+    const finalMins = secs === 60 ? floormins + 1 : floormins;
+    const finalSecs = secs === 60 ? 0 : secs;
+
+    // Format with leading zero
+    const secsFormatted = finalSecs.toString().padStart(2, '0');
+
+document.getElementById("result").innerText =
+  `Predicted time: ${finalMins}:${secsFormatted}`;
+
+    }
+  </script>
+
+</body>
+</html>
