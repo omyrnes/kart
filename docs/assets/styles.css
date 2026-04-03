@@ -1,14 +1,83 @@
 body {
-  background-color:#1e1e1e;
+  background-color: #1e1e1e;
   font-family: Arial, sans-serif;
-  color: grey;
-}
-h1, h2, h3, h4, h5, h6 {
-    color: hotpink
+  color: #ccc;
+  margin: 0;
+  padding: 0;
 }
 
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: hotpink;
+  margin-bottom: 10px;
+}
+
+/* Layout container */
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Inputs */
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background-color: #2a2a2a;
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Sliders */
+input[type=range] {
+  padding: 0;
+}
+
+/* Labels */
+label {
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* Value display under sliders */
+.value {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+/* Result display */
+.result {
+  font-size: 36px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  color: hotpink;
+}
+
+/* Links */
 main a {
-  color: grey; /* blue links inside content */
+  color: #ccc;
   text-decoration: underline;
   font-weight: 500;
+}
+
+/* 📱 Mobile improvements */
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  input, select {
+    font-size: 18px; /* easier tapping */
+    padding: 14px;
+  }
+
+  .result {
+    font-size: 42px; /* big readable output */
+  }
 }

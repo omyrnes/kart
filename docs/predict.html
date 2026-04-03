@@ -2,37 +2,44 @@
 <html>
 <head>
   <title>Time Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/header.css">
 </head>
 <body>
 
-  <h2>Tryvann predictor</h2>
+  <header class="app-header">
+    <div class="app-header--title">Tryvann Predictor</div>
+  </header>
 
-  <label>Rider weight (kg):</label><br>
-  <input type="number" id="weight"><br><br>
+  <div class="container">
+    <label>Rider weight (kg):</label><br>
+    <input type="number" id="weight"><br><br>
 
-  <label>Average Watts:</label><br>
-  <input type="number" id="watts"><br><br>
+    <label>Average Watts:</label><br>
+    <input type="number" id="watts"><br><br>
 
-  <label>Wind speed (m/s):</label><br>
-  <input type="number" id="wind_speed"><br><br>
+    <label>Wind speed (m/s):</label><br>
+    <input type="number" id="wind_speed"><br><br>
 
-  <label>Wind Direction:</label><br>
-  <select id="wind_dir">
-    <option value="180">South</option>
-    <option value="225">South west</option>
-    <option value="270">West</option>
-    <option value="315">North West</option>
-    <option value="0">North</option>
-    <option value="45">North East</option>
-    <option value="90">East</option>
-    <option value="135">South East</option>
+    <label>Wind Direction:</label><br>
+    <select id="wind_dir">
+      <option value="180">South</option>
+      <option value="225">South west</option>
+      <option value="270">West</option>
+      <option value="315">North West</option>
+      <option value="0">North</option>
+      <option value="45">North East</option>
+      <option value="90">East</option>
+      <option value="135">South East</option>
 
-  </select><br><br>
+    </select><br><br>
 
-  <button onclick="predictTime()">Calculate</button>
+    <button onclick="predictTime()">Calculate</button>
 
-  <h3 id="result"></h3>
-
+    <h3 id="result"></h3>
+  </div>
   <script>
     function predictTime() {
       const weight = parseFloat(document.getElementById("weight").value);

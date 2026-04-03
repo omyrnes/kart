@@ -1,10 +1,28 @@
 .app-header {
     height: 60px;
     line-height: 60px;
-    border-bottom: thin lightgrey solid;
+    border-bottom: 1px solid #333;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    background-color: #1e1e1e;
 }
 
 .app-header .app-header--title {
-    font-size: 22px;
-    padding-left: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    color: hotpink;
+}
+
+/* 📱 Mobile tweak */
+@media (max-width: 600px) {
+    .app-header {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
+    }
+
+    .app-header .app-header--title {
+        font-size: 18px;
+    }
 }
