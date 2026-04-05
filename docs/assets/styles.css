@@ -1,16 +1,28 @@
 body {
+  display: flex;
+  justify-content: center;  /* horizontal centering */
+  align-items: center;      /* vertical centering */
+  min-height: 100vh;        /* full viewport height */
+  margin: 0;
   background-color: #1e1e1e;
   font-family: Arial, sans-serif;
   color: #ccc;
-  margin: 0;
-  padding: 0;
 }
-
 /* Headings */
 h1, h2, h3, h4, h5, h6 {
   color: hotpink;
   margin-bottom: 10px;
 }
+
+.card {
+  background: #1e1e1e;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 320px;
+  text-align: center;
+  }
+
 
 /* Layout container */
 .container {
@@ -29,19 +41,48 @@ input, select {
   border-radius: 10px;
   border: 1px solid #333;
   background-color: #2a2a2a;
-  color: #fff;
-  font-size: 16px;
+  font-size: 13px;
+  color: #ccc;
 }
 
-/* Sliders */
+/* Base slider track */
 input[type=range] {
-  padding: 0;
+  -webkit-appearance: none;   /* Chrome/Safari */
+  width: 100%;
+  height: 6px;
+  border-radius: 5px;
+  background: linear-gradient(hotpink, hotpink) 0 / var(--fill, 50%) 100% no-repeat, #444;
+  outline: none;
+  cursor: pointer;
 }
 
-/* Labels */
-label {
-  font-size: 14px;
-  color: #aaa;
+/* Remove Chrome/Safari thumb */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  height: 0;
+}
+
+/* Remove Firefox thumb */
+input[type=range]::-moz-range-thumb {
+  width: 0;
+  height: 0;
+  border: none;
+  background: transparent;
+}
+
+/* Firefox track */
+input[type=range]::-moz-range-track {
+  background: #444;
+  height: 6px;
+  border-radius: 5px;
+}
+
+/* Firefox filled part */
+input[type=range]::-moz-range-progress {
+  background: hotpink;
+  height: 6px;
+  border-radius: 5px;
 }
 
 /* Value display under sliders */
