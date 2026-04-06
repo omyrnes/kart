@@ -145,24 +145,24 @@ function updateValues(changed) {
 
     if (changed === 'water') {
       const water = parseFloat(waterSlider.value);
-      coffeeSlider.value = Math.min(coffeeSlider.max, water / koppRatio);
-      koppSlider.value = Math.min(koppSlider.max, water / koppRatio);
+      coffeeSlider.value = Math.min(coffeeSlider.max, (water / ratio).toFixed(1));
+      koppSlider.value = Math.min(koppSlider.max, (water / koppRatio).toFixed(1));
     } else if (changed === 'coffee') {
       const coffee = parseFloat(coffeeSlider.value);
       waterSlider.value = Math.min(waterSlider.max, coffee * ratio);
-      koppSlider.value = Math.min(koppSlider.max, coffee / (koppRatio/ratio));
+      koppSlider.value = Math.min(koppSlider.max, (coffee / (koppRatio/ratio)).toFixed(1));
     } else if (changed === 'kopper') {
       const kopper = parseFloat(koppSlider.value);
       waterSlider.value = Math.min(waterSlider.max, kopper*koppRatio);
-      coffeeSlider.value = Math.min(coffeeSlider.max, kopper*(koppRatio/ratio));
+      coffeeSlider.value = Math.min(coffeeSlider.max, (kopper*(koppRatio/ratio)).toFixed(1));
     }
 
     updating = false;
   }
 
-  waterVal.innerText = `${parseFloat(waterSlider.value).toFixed(0)} ml`;
-  coffeeVal.innerText = `${parseFloat(coffeeSlider.value).toFixed(1)} g`;
-  kopperVal.innerText = `${parseFloat(koppSlider.value).toFixed(1)} kopper`;
+  waterVal.innerText = `${parseFloat(waterSlider.value)} ml`;
+  coffeeVal.innerText = `${parseFloat(coffeeSlider.value)} g`;
+  kopperVal.innerText = `${parseFloat(koppSlider.value)} kopper`;
 
   updateSliderFill(waterSlider);
   updateSliderFill(coffeeSlider);
@@ -170,10 +170,24 @@ function updateValues(changed) {
 }
 
 // Slider events
-waterSlider.addEventListener('input', () => updateValues('water'));
-coffeeSlider.addEventListener('input', () => updateValues('coffee'));
-koppSlider.addEventListener('input', () => updateValues('kopper'));
+[waterSlider, coffeeSlider, koppSlider].forEach(slider => {
+  slider.addEventListener('input', () => {
+    if (slider.id === 'kopper') {
+      koppSlider.step = 1;    
+    } else {
+      koppSlider.step = "any"; 
+    }
 
+    // --- COFFEE behavior ---
+    if (slider.id === 'coffee') {
+      coffeeSlider.step = 1;   
+    } else {
+      coffeeSlider.step = "any"; 
+    }
+
+    updateValues(slider.id);
+  });
+});
 // Initial setup
 updateValues();
 </script>
