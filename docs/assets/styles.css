@@ -108,16 +108,27 @@ main a {
     padding: 15px;
   }
 
-  /* Inputs / selects */
-  .input-group input,
+  /* Inputs / selects (EXCLUDING sliders) */
+  .input-group input:not([type=range]),
   .input-group select {
-    font-size: 18px;       /* easier tapping */
-    max-width: 300px;      /* cap the width */
+    font-size: 18px;
+    padding: 14px;
+    width: 85%;
+    max-width: 300px;
     display: block;
-    margin: 5px auto 15px auto; /* centers inputs */
+    margin: 5px auto 15px auto;
+  }
+
+  /* Sliders (separate rule ✅) */
+  input[type=range] {
+    width: 85%;
+    max-width: 300px;
+    margin: 10px auto 20px auto;
+    display: block;
+    padding: 0; /* critical for Safari */
   }
 
   .result {
-    font-size: 42px; /* big readable output */
+    font-size: 42px;
   }
 }
