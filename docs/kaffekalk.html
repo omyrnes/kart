@@ -88,14 +88,20 @@
 
   <div class="input-group">
     <label>Vann (ml)</label>
-    <input type="range" id="water" min="0" max="2000" step="1" value="416">
-    <div class="value" id="water_val">416 ml</div>
+    <input type="range" id="water" min="0" max="1500" step="1" value="150">
+    <div class="value" id="water_val">150 ml</div>
   </div>
 
   <div class="input-group">
     <label>Kaffe (g)</label>
-    <input type="range" id="coffee" min="0" max="100" step="1" value="25">
-    <div class="value" id="coffee_val">25 g</div>
+    <input type="range" id="coffee" min="0" max="90" step="1" value="9">
+    <div class="value" id="coffee_val">9 g</div>
+  </div>
+
+    <div class="input-group">
+    <label>Antall kopper</label>
+    <input type="range" id="kopper" min="0" max="10" step=".1" value="1">
+    <div class="value" id="kopper_val">1 kopp</div>
   </div>
 
 </div>
@@ -103,11 +109,14 @@
 <script>
 const waterSlider = document.getElementById('water');
 const coffeeSlider = document.getElementById('coffee');
+const koppSlider = document.getElementById('kopper');
 const waterVal = document.getElementById('water_val');
 const coffeeVal = document.getElementById('coffee_val');
+const kopperVal = document.getElementById('kopper_val');
 
 // Coffee-to-water ratio
 const ratio = 1000 / 60;
+const koppRatio = 150;
 let updating = false;
 
 function updateSliderFill(slider) {
@@ -136,10 +145,16 @@ function updateValues(changed) {
 
     if (changed === 'water') {
       const water = parseFloat(waterSlider.value);
-      coffeeSlider.value = Math.min(coffeeSlider.max, water / ratio);
+      coffeeSlider.value = Math.min(coffeeSlider.max, water / koppRatio);
+      koppSlider.value = Math.min(koppSlider.max, water / koppRatio);
     } else if (changed === 'coffee') {
       const coffee = parseFloat(coffeeSlider.value);
       waterSlider.value = Math.min(waterSlider.max, coffee * ratio);
+      koppSlider.value = Math.min(koppSlider.max, coffee / (koppRatio/ratio));
+    } else if (changed === 'kopper') {
+      const kopper = parseFloat(koppSlider.value);
+      waterSlider.value = Math.min(waterSlider.max, kopper*koppRatio);
+      coffeeSlider.value = Math.min(coffeeSlider.max, kopper*(koppRatio/ratio));
     }
 
     updating = false;
@@ -147,14 +162,17 @@ function updateValues(changed) {
 
   waterVal.innerText = `${parseFloat(waterSlider.value).toFixed(0)} ml`;
   coffeeVal.innerText = `${parseFloat(coffeeSlider.value).toFixed(1)} g`;
+  kopperVal.innerText = `${parseFloat(koppSlider.value).toFixed(1)} kopper`;
 
   updateSliderFill(waterSlider);
   updateSliderFill(coffeeSlider);
+  updateSliderFill(koppSlider);
 }
 
 // Slider events
 waterSlider.addEventListener('input', () => updateValues('water'));
 coffeeSlider.addEventListener('input', () => updateValues('coffee'));
+koppSlider.addEventListener('input', () => updateValues('kopper'));
 
 // Initial setup
 updateValues();
