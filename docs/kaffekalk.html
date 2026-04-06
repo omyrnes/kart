@@ -14,6 +14,7 @@
     align-items: flex-start;
     padding: 50px 0;
   }
+
   .card {
     background: white;
     padding: 25px;
@@ -23,37 +24,61 @@
     text-align: center;
     margin-bottom: 30px;
   }
+
   h2 { margin-bottom: 20px; }
   .input-group { margin-bottom: 20px; text-align: left; }
-  label { font-size: 14px; color: #555; }
+  label { font-size: 14px; color: #555; display: block; margin-bottom: 5px; }
+
   input[type=range] {
     width: 100%;
     -webkit-appearance: none;
-    height: 8px;
+    height: 12px;
     background: #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
     padding: 0;
-    margin-top: 10px;
+    touch-action: pan-x;
+    -webkit-tap-highlight-color: transparent;
   }
+
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: white;
-    border: 2px solid brown;
+    border: 3px solid brown;
     border-radius: 50%;
     cursor: pointer;
-    margin-top: -6px;
+    margin-top: -0px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.1s;
   }
+
+  input[type=range]:active::-webkit-slider-thumb {
+    transform: scale(1.2);
+  }
+
   input[type=range]::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 28px;
+    height: 28px;
     background: white;
-    border: 2px solid brown;
+    border: 3px solid brown;
     border-radius: 50%;
     cursor: pointer;
   }
-  .value { font-size: 14px; color: #888; margin-top: 5px; text-align: right; }
+
+  input[type=range]::-moz-range-track {
+    height: 12px;
+    background: #ddd;
+    border-radius: 6px;
+  }
+
+  .value {
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+    text-align: right;
+  }
+
 </style>
 </head>
 <body>
@@ -63,13 +88,13 @@
 
   <div class="input-group">
     <label>Vann (ml)</label>
-    <input type="range" id="water" min="0" max="2000" step="10" value="500">
+    <input type="range" id="water" min="0" max="2000" step="1" value="416">
     <div class="value" id="water_val">416 ml</div>
   </div>
 
   <div class="input-group">
     <label>Kaffe (g)</label>
-    <input type="range" id="coffee" min="0" max="100" step="1" value="30">
+    <input type="range" id="coffee" min="0" max="100" step="1" value="24">
     <div class="value" id="coffee_val">24 g</div>
   </div>
 
@@ -81,26 +106,38 @@ const coffeeSlider = document.getElementById('coffee');
 const waterVal = document.getElementById('water_val');
 const coffeeVal = document.getElementById('coffee_val');
 
-// Fixed ratio 1000 ml / 60 g
+// Coffee-to-water ratio
 const ratio = 1000 / 60;
 let updating = false;
 
 function updateSliderFill(slider) {
-  const min = slider.min;
-  const max = slider.max;
-  const val = slider.value;
-  const percentage = ((val - min) / (max - min)) * 100;
-  slider.style.background = `linear-gradient(to right, brown 0%, brown ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
+  const min = parseFloat(slider.min);
+  const max = parseFloat(slider.max);
+  const val = parseFloat(slider.value);
+
+  // Calculate normalized percentage
+  const percentage = (val - min) / (max - min);
+
+  // Thumb width in px (must match CSS)
+  const thumbWidth = 28;
+
+  // Track width
+  const trackWidth = slider.offsetWidth;
+
+  // Correct the fill percentage so thumb center aligns
+  const fillPercent = Math.min(100, Math.max(0, (percentage * (trackWidth - thumbWidth) + thumbWidth/2) / trackWidth * 100));
+
+  slider.style.background = `linear-gradient(to right, brown 0%, brown ${fillPercent}%, #ddd ${fillPercent}%, #ddd 100%)`;
 }
 
-function updateValues(changedSlider) {
+function updateValues(changed) {
   if (!updating) {
     updating = true;
 
-    if (changedSlider === 'water') {
+    if (changed === 'water') {
       const water = parseFloat(waterSlider.value);
       coffeeSlider.value = Math.min(coffeeSlider.max, water / ratio);
-    } else if (changedSlider === 'coffee') {
+    } else if (changed === 'coffee') {
       const coffee = parseFloat(coffeeSlider.value);
       waterSlider.value = Math.min(waterSlider.max, coffee * ratio);
     }
@@ -108,21 +145,18 @@ function updateValues(changedSlider) {
     updating = false;
   }
 
-  // Update display values
   waterVal.innerText = `${parseFloat(waterSlider.value).toFixed(0)} ml`;
   coffeeVal.innerText = `${parseFloat(coffeeSlider.value).toFixed(1)} g`;
 
-  // Update both slider fills
   updateSliderFill(waterSlider);
   updateSliderFill(coffeeSlider);
 }
 
-// Attach listeners
-[waterSlider, coffeeSlider].forEach(slider => {
-  slider.addEventListener('input', () => updateValues(slider.id));
-});
+// Slider events
+waterSlider.addEventListener('input', () => updateValues('water'));
+coffeeSlider.addEventListener('input', () => updateValues('coffee'));
 
-// Initial update
+// Initial setup
 updateValues();
 </script>
 
