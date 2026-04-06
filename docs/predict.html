@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Time Predictor</title>
+  <title>Tryvann Predictor</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="assets/styles.css">
@@ -13,10 +13,12 @@
     <h2>Tryvann Predictor</h2>
 
     <div class="input-group">
-      <label>Weight (kg)</label>
-      <input type="range" id="weight" min="50" max="100" step="0.5" value="75">
-      <div class="value" id="weight_val">75 kg</div>
-    </div>
+  <label>Weight (kg)</label>
+  <div class="slider-wrap">
+    <input type="range" id="weight" min="50" max="100" step="0.5" value="75">
+  </div>
+  <div class="value" id="weight_val">75 kg</div>
+</div>
 
     <div class="input-group">
       <label>Average Watts</label>
@@ -96,37 +98,31 @@
 
     }
 
-function updateSliderFill(slider) {
-  const min = slider.min ? parseFloat(slider.min) : 0;
-  const max = slider.max ? parseFloat(slider.max) : 100;
-  const value = parseFloat(slider.value);
-
-  const percent = ((value - min) / (max - min)) * 100;
-  slider.style.setProperty('--fill', percent + '%');
+    function updateSliderFill(slider) {
+  const min = slider.min;
+  const max = slider.max;
+  const val = slider.value;
+  const percentage = ((val - min) / (max - min)) * 100;
+  slider.style.background = `linear-gradient(to right, hotpink 0%, hotpink ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
 }
-  // Live updates
-  document.getElementById("weight").addEventListener("input", predictTime);
-  document.getElementById("watts").addEventListener("input", predictTime);
-  document.getElementById("wind_speed").addEventListener("input", predictTime);
-  document.getElementById("wind_dir").addEventListener("change", predictTime);
 
-const sliders = document.querySelectorAll('input[type="range"]');
-
+// Apply to sliders
+const sliders = document.querySelectorAll('input[type=range]');
 sliders.forEach(slider => {
-  slider.addEventListener("input", () => {
+  updateSliderFill(slider); // initial fill
+  slider.addEventListener('input', () => {
     updateSliderFill(slider);
-    predictTime();
+    predictTime(); // also update your result
   });
-
-  // initialize on load
-  updateSliderFill(slider);
 });
 
-// Dropdown (only prediction)
-windDir.addEventListener("change", predictTime);
-  predictTime();
-  updateSliderFill(slider);
-  
+    // Live updates
+    document.getElementById("weight").addEventListener("input", predictTime);
+    document.getElementById("watts").addEventListener("input", predictTime);
+    document.getElementById("wind_dir").addEventListener("change", predictTime);
+
+    // Initial calculation
+    predictTime();
   
   </script>
 

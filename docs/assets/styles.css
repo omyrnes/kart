@@ -14,91 +14,79 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 10px;
 }
 
-.card {
-  background: #1e1e1e;
-  padding: 25px;
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  width: 320px;
-  text-align: center;
-  }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      width: 320px;
+      text-align: center;
+    }
 
+    h2 {
+      margin-bottom: 20px;
+    }
 
-/* Layout container */
-.container {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
-}
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
 
-/* Inputs */
-input, select {
-  width: 100%;
-  max-width: 300px;
-  display: block;
-  margin: 5px auto 15px auto;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #333;
-  background-color: #2a2a2a;
-  font-size: 13px;
-  color: #ccc;
-}
+    label {
+      font-size: 14px;
+      color: #555;
+    }
 
-/* Base slider track */
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+    }
+
+    input[type=range] {
+      padding: 0;
+    }
+
 input[type=range] {
-  -webkit-appearance: none;   /* Chrome/Safari */
+  -webkit-appearance: none;
   width: 100%;
-  height: 6px;
+  height: 8px;
   border-radius: 5px;
-  background: linear-gradient(hotpink, hotpink) 0 / var(--fill, 50%) 100% no-repeat, #444;
+  background: #ddd;
   outline: none;
+  transition: background 0.2s;
+}
+
+/* Chrome, Safari, Edge: thumb */
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;      /* thumb color */
+  border-radius: 50%;
+  border: 2px solid #555; /* optional outline for visibility */
+  cursor: pointer;
+  margin-top: -0px; /* align with track */
+}
+
+/* Firefox: thumb */
+input[type=range]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;      /* thumb color */
+  border-radius: 50%;
+  border: 2px solid hotpink; /* optional outline for visibility */
   cursor: pointer;
 }
 
-/* Remove Chrome/Safari thumb */
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 0;
-  height: 0;
-}
-
-/* Remove Firefox thumb */
-input[type=range]::-moz-range-thumb {
-  width: 0;
-  height: 0;
-  border: none;
-  background: transparent;
-}
-
-/* Firefox track */
-input[type=range]::-moz-range-track {
-  background: #444;
-  height: 6px;
-  border-radius: 5px;
-}
-
-/* Firefox filled part */
-input[type=range]::-moz-range-progress {
-  background: hotpink;
-  height: 6px;
-  border-radius: 5px;
-}
-
-/* Value display under sliders */
-.value {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 10px;
-}
-
-/* Result display */
 .result {
-  font-size: 36px;
-  font-weight: bold;
-  text-align: center;
   margin-top: 20px;
-  color: hotpink;
+  font-size: 36px;      /* larger font */
+  font-weight: bold;
+  color: hotpink;        /* ensures it stays hotpink */
 }
 
 /* Links */
