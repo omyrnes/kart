@@ -112,8 +112,6 @@ main a {
   .input-group input,
   .input-group select {
     font-size: 18px;       /* easier tapping */
-    padding: 14px;
-    width: 85%;            /* less than 100% */
     max-width: 300px;      /* cap the width */
     display: block;
     margin: 5px auto 15px auto; /* centers inputs */
