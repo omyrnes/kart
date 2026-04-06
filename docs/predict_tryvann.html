@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tryvann Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/header.css">
+</head>
+<body>
+
+<div class="centered">
+  <div class="card">
+    <h2>Tryvann Predictor</h2>
+
+    <div class="input-group">
+      <label>Weight (kg)</label>
+      <div class="slider-wrap">
+        <input type="range" id="weight" min="50" max="100" step="0.5" value="75">
+      </div>
+      <div class="value" id="weight_val">75 kg</div>
+    </div>
+
+    <div class="input-group">
+      <label>Average Watts</label>
+      <input type="range" id="watts" min="100" max="600" step="5" value="250">
+      <div class="value" id="watts_val">250 W</div>
+    </div>
+
+    <div class="input-group">
+      <label>Wind speed</label>
+      <input type="range" id="wind_speed" min="0" max="30" step="1" value="10">
+      <div class="value" id="wind_val">10 m/s</div>
+    </div>
+
+    <div class="input-group">
+      <label>Wind Direction</label>
+      <select id="wind_dir">
+        <option value="180">South (S)</option>
+        <option value="225">South-West (SW)</option>
+        <option value="270">West (W)</option>
+        <option value="315">North-West (NW)</option>
+        <option value="0">North (N)</option>
+        <option value="45">North-East (NE)</option>
+        <option value="90">East (E)</option>
+        <option value="135">South-East (SE)</option>
+      </select>
+    </div>
+
+    <div class="result" id="result">--:--</div>
+  </div>
+</div>
+  
+  <script>
+    function predictTime() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const watts = parseFloat(document.getElementById("watts").value);
+      const wind_speed = parseFloat(document.getElementById("wind_speed").value);
+      const wind_deg = parseFloat(document.getElementById("wind_dir").value);
+
+      // Update displayed values
+      document.getElementById("weight_val").innerText = weight + " kg";
+      document.getElementById("watts_val").innerText = watts + " W";
+      document.getElementById("wind_val").innerText = wind_speed + " m/s";
+
+      const wind_dir_rad = wind_deg * Math.PI / 180;
+      const u = wind_speed*Math.sin(wind_dir_rad); // øst-vest
+      const v = wind_speed*Math.cos(wind_dir_rad); // nord-sør
+
+      // coefficients
+      const intercept = 28.75857151;
+      const b_watts = -1.97684089;
+      const b_v = 0.04889548;
+      const b_u = 0.02156564;
+
+      // If you used watt/kg instead:
+      const wattkg = watts / weight;
+
+      // Example using average_watts model:
+      const minutter = intercept 
+                     + b_watts * wattkg 
+                     + b_v * v 
+                     + b_u * u;
+    // Get whole minutes
+    const floormins = Math.floor(minutter);
+
+    // Get seconds
+    const secs = Math.round((minutter - floormins) * 60);
+
+    // Handle edge case (e.g. 59.9 → 60 sec)
+    const finalMins = secs === 60 ? floormins + 1 : floormins;
+    const finalSecs = secs === 60 ? 0 : secs;
+
+    // Format with leading zero
+    const secsFormatted = finalSecs.toString().padStart(2, '0');
+
+  document.getElementById("result").innerText =
+  `${finalMins}:${secsFormatted}`;
+
+    }
+
+    function updateSliderFill(slider) {
+  const min = slider.min;
+  const max = slider.max;
+  const val = slider.value;
+  const percentage = ((val - min) / (max - min)) * 100;
+  slider.style.background = `linear-gradient(to right, hotpink 0%, hotpink ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
+}
+
+// Apply to sliders
+const sliders = document.querySelectorAll('input[type=range]');
+sliders.forEach(slider => {
+  updateSliderFill(slider); // initial fill
+  slider.addEventListener('input', () => {
+    updateSliderFill(slider);
+    predictTime(); // also update your result
+  });
+});
+
+    // Live updates
+    document.getElementById("weight").addEventListener("input", predictTime);
+    document.getElementById("watts").addEventListener("input", predictTime);
+    document.getElementById("wind_dir").addEventListener("change", predictTime);
+
+    // Initial calculation
+    predictTime();
+  
+  </script>
+
+</body>
+</html>

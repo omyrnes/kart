@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grefsenkollen Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/header.css">
+</head>
+<body>
+
+<div class="centered">
+  <div class="card">
+    <h2>Grefsenkollen Predictor</h2>
+
+    <div class="input-group">
+      <label>Average Watts</label>
+      <input type="range" id="watts" min="100" max="600" step="5" value="250">
+      <div class="value" id="watts_val">250 W</div>
+    </div>
+
+    <div class="input-group">
+      <label>Weight (kg)</label>
+      <div class="slider-wrap">
+        <input type="range" id="weight" min="50" max="100" step="0.5" value="75">
+      </div>
+      <div class="value" id="weight_val">75 kg</div>
+    </div>
+
+
+    <div class="result" id="result">--:--</div>
+  </div>
+</div>
+  
+  <script>
+    function predictTime() {
+      const weight = parseFloat(document.getElementById("weight").value);
+      const watts = parseFloat(document.getElementById("watts").value);
+
+      // Update displayed values
+      document.getElementById("weight_val").innerText = weight + " kg";
+      document.getElementById("watts_val").innerText = watts + " W";
+
+      // coefficients
+      const intercept = 9.237054;
+      const b_watts = -0.584001;
+
+      // If you used watt/kg instead:
+      const wattkg = watts / weight;
+
+      // Example using average_watts model:
+      const minutter = intercept 
+                     + b_watts * wattkg 
+  
+    // Get whole minutes
+    const floormins = Math.floor(minutter);
+
+    // Get seconds
+    const secs = Math.round((minutter - floormins) * 60);
+
+    // Handle edge case (e.g. 59.9 → 60 sec)
+    const finalMins = secs === 60 ? floormins + 1 : floormins;
+    const finalSecs = secs === 60 ? 0 : secs;
+
+    // Format with leading zero
+    const secsFormatted = finalSecs.toString().padStart(2, '0');
+
+  document.getElementById("result").innerText =
+  `${finalMins}:${secsFormatted}`;
+
+    }
+
+    function updateSliderFill(slider) {
+  const min = slider.min;
+  const max = slider.max;
+  const val = slider.value;
+  const percentage = ((val - min) / (max - min)) * 100;
+  slider.style.background = `linear-gradient(to right, hotpink 0%, hotpink ${percentage}%, #ddd ${percentage}%, #ddd 100%)`;
+}
+
+// Apply to sliders
+const sliders = document.querySelectorAll('input[type=range]');
+sliders.forEach(slider => {
+  updateSliderFill(slider); // initial fill
+  slider.addEventListener('input', () => {
+    updateSliderFill(slider);
+    predictTime(); // also update your result
+  });
+});
+
+    // Live updates
+    document.getElementById("weight").addEventListener("input", predictTime);
+    document.getElementById("watts").addEventListener("input", predictTime);
+
+    // Initial calculation
+    predictTime();
+  
+  </script>
+
+</body>
+</html>
