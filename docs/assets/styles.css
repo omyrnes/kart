@@ -66,10 +66,10 @@ input[type=range]::-webkit-slider-thumb {
   width: 20px;
   height: 20px;
   background: white;
-  border: 2px solid hotpink;
+  border: 2px solid black;   /* 👈 your border is back */
   border-radius: 50%;
   cursor: pointer;
-  margin-top: 0; /* 🔥 remove the old centering hack */
+  margin-top: -6px;          /* default centering */
 }
 
 input[type=range]::-webkit-slider-runnable-track {
@@ -102,6 +102,12 @@ main a {
   font-weight: 500;
 }
 
+@supports (-webkit-touch-callout: none) {
+  input[type=range]::-webkit-slider-thumb {
+    margin-top: -6px; /* tweak if needed: try -5px or -7px */
+  }
+}
+
 /* 📱 Mobile improvements */
 @media (max-width: 600px) {
   .container {
@@ -124,13 +130,11 @@ input[type=range] {
   -webkit-appearance: none;
   width: 85%;
   max-width: 300px;
-  height: 20px;              /* match thumb height */
-  display: flex;
-  align-items: center;       /* centers thumb vertically */
+  height: 8px;              /* match track height */
   padding: 0;
   margin: 10px auto 20px auto;
+  display: block;
 }
-
   .result {
     font-size: 42px;
   }
