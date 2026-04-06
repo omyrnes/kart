@@ -65,17 +65,17 @@ input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 20px;
   height: 20px;
-  background: white;      /* thumb color */
+  background: white;
+  border: 2px solid hotpink;
   border-radius: 50%;
-  border: 2px solid #555; /* optional outline for visibility */
   cursor: pointer;
-  margin-top: -0px; /* align with track */
+  margin-top: 0; /* 🔥 remove the old centering hack */
 }
 
 input[type=range]::-webkit-slider-runnable-track {
   height: 8px;
   border-radius: 5px;
-  background: transparent; /* important */
+  background: transparent;
 }
 
 /* Firefox: thumb */
@@ -120,13 +120,16 @@ main a {
   }
 
   /* Sliders (separate rule ✅) */
-  input[type=range] {
-    width: 85%;
-    max-width: 300px;
-    margin: 10px auto 20px auto;
-    display: block;
-    padding: 0; /* critical for Safari */
-  }
+input[type=range] {
+  -webkit-appearance: none;
+  width: 85%;
+  max-width: 300px;
+  height: 20px;              /* match thumb height */
+  display: flex;
+  align-items: center;       /* centers thumb vertically */
+  padding: 0;
+  margin: 10px auto 20px auto;
+}
 
   .result {
     font-size: 42px;
