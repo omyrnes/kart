@@ -32,7 +32,7 @@
       <input type="range" id="wind_speed" min="0" max="30" step="1" value="10">
       <div class="value" id="wind_val">10 m/s</div>
     </div>
-
+    
     <div class="input-group">
       <label>Wind Direction</label>
       <select id="wind_dir">
@@ -44,6 +44,14 @@
         <option value="45">North-East (NE)</option>
         <option value="90">East (E)</option>
         <option value="135">South-East (SE)</option>
+      </select>
+    </div>
+
+    <div class="input-group">
+      <label>Bike</label>
+      <select id="bike">
+      <option value="0">Argon18</option>
+      <option value="0.729195">Giant</option>
       </select>
     </div>
 
@@ -77,12 +85,15 @@
       // If you used watt/kg instead:
       const wattkg = watts / weight;
 
-      // Example using average_watts model:
-      const minutter = intercept 
-                     + b_watts * watts
-                     + b_weight*weight
-                     + b_v * v 
-                     + b_u * u;
+      const bike_coef = parseFloat(document.getElementById("bike").value);
+
+      const minutter = intercept
+        + b_watts * watts
+        + b_weight * weight
+        + b_v * v
+        + b_u * u
+        + bike_coef; 
+      
     // Get whole minutes
     const floormins = Math.floor(minutter);
 
@@ -122,7 +133,9 @@ sliders.forEach(slider => {
     // Live updates
     document.getElementById("weight").addEventListener("input", predictTime);
     document.getElementById("watts").addEventListener("input", predictTime);
+    document.getElementById("bike").addEventListener("change", predictTime);
     document.getElementById("wind_dir").addEventListener("change", predictTime);
+
 
     // Initial calculation
     predictTime();
