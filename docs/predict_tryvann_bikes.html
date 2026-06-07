@@ -51,7 +51,7 @@
       <label>Bike</label>
       <select id="bike">
       <option value="0">Argon18</option>
-      <option value="0.729195">Giant</option>
+      <option value="0.783730">Giant</option> # kan ikke denne heller komme inn senere?
       </select>
     </div>
 
@@ -76,11 +76,11 @@
       const v = wind_speed*Math.cos(wind_dir_rad); // nord-sør
 
       // coefficients
-      const intercept = 5.139666
-      const b_watts = -0.035112;
-      const b_weight = 0.358598
-      const b_v = 0.119496
-      const b_u = 0.002429
+      const intercept = 13.939841
+      const b_watts = -0.036448;
+      const b_weight = 0.240795
+      const b_v = 0.072212
+      const b_u = 0.046009
 
       // If you used watt/kg instead:
       const wattkg = watts / weight;
